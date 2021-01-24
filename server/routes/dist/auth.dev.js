@@ -49,6 +49,7 @@ router.post("/registerDetails", function (request, response) {
         console.log("Data Saved Successfully !"); // Store data into session !
 
         request.session.email = user.email;
+        request.session.username = user.username;
         request.session.ID = user._id;
         console.log(request.session); // Response
 
@@ -91,6 +92,7 @@ router.post("/loginDetails", function (request, response) {
         //Here user will be an object containing all details as its properties !
         // Store data into session !
         request.session.email = user.email;
+        request.session.username = user.username;
         request.session.ID = user._id; // Response !
 
         response.json({
@@ -106,7 +108,7 @@ router.post("/loginDetails", function (request, response) {
     } else {
       // User Doesn't exists !
       response.json({
-        emailerror: "User is not registered !"
+        emailerror: "User is not registered"
       });
     }
 
