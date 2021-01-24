@@ -11,7 +11,11 @@ const purchaseSchema = new schema({
         required: true
     },
     courseName : {
-        type: String,
+        type: [String],
+        required: true
+    },
+    courseID : {
+        type: [String],
         required: true
     },
     timeStamp : {

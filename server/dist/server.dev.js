@@ -47,7 +47,9 @@ app.set("view engine", "ejs"); // Bring Route files from routes folder !
 
 var auth = require("./routes/auth");
 
-var course = require("./routes/course"); // Bring url !
+var course = require("./routes/course");
+
+var purchase = require("./routes/purchase"); // Bring url !
 
 
 var url = require("./setup/config").url; // Database Connection !
@@ -76,8 +78,11 @@ app.get("/", redirectLogin, function (request, response) {
   });
 }); // Authentication Route !
 
-app.use("/auth", redirectHome, auth);
-app.use("/course", redirectLogin, course); //@type - GET
+app.use("/auth", redirectHome, auth); // Courses ADD/DELETE Route !
+
+app.use("/course", redirectLogin, course); // Course Purchase Route !
+
+app.use("/purchase", redirectLogin, purchase); //@type - GET
 //@access - Private
 //@route - /logout
 

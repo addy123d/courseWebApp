@@ -46,6 +46,7 @@ app.set("view engine","ejs");
 // Bring Route files from routes folder !
 const auth = require("./routes/auth");
 const course = require("./routes/course");
+const purchase = require("./routes/purchase");
 
 // Bring url !
 const url = require("./setup/config").url;
@@ -82,7 +83,12 @@ app.get("/",redirectLogin,function(request,response){
 
 // Authentication Route !
 app.use("/auth",redirectHome,auth);
+
+// Courses ADD/DELETE Route !
 app.use("/course",redirectLogin,course);
+
+// Course Purchase Route !
+app.use("/purchase",redirectLogin,purchase);
 
 //@type - GET
 //@access - Private
