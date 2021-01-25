@@ -5,6 +5,11 @@ const router = express.Router();
 const Course = require("../tables/Courses");
 const Purchase = require("../tables/Purchase");
 
+// @type    GET
+//@route    /purchase/:id
+// @desc    Purchase Course
+// @access  Private
+
 router.get("/:id",function(request,response){
     const {id} = request.params;
 
@@ -59,14 +64,20 @@ router.get("/:id",function(request,response){
                                         courseName : course.courseName
                                     }
                                 })
-                                    .then(function(purchasedCourse){
-                                        console.log("Course Updated !");
+                                    .then(function(){
+
                                         response.json({
-                                            result : `Course Updated : ${purchasedCourse.courseName}`
-                                        })
+                                            result : `success`,
+                                            type : `coursepurchased`
+                                        });
+
                                     })
                                     .catch(function(error){
                                         console.log(`Error : ${error}`);
+                                        response.status(501).json({
+                                            result : "fail",
+                                            type: "DBerror"
+                                        });
                                     });
 
                         }
@@ -94,22 +105,38 @@ router.get("/:id",function(request,response){
                         new Purchase(purchaseObject).save()
                             .then(function(purchasedCourse){
                                 console.log("Course Purchased");
+
                                 response.json({
-                                    result : `Course Purchased : ${purchasedCourse.courseName}`
-                                })
+                                    result : 'success',
+                                    type : 'coursepurchased'
+                                });
+
                             })
                             .catch(function(error){
                                 console.log(`Error : ${error}`);
+                                
+                                response.status(501).json({
+                                    result : "fail",
+                                    type: "DBerror"
+                                });
                             });
 
                     }
                 })
                 .catch(function(error){
                     console.log(`Error : ${error}`);
+                    response.status(501).json({
+                        result : "fail",
+                        type: "DBerror"
+                    });
                 });
         })
         .catch(function(error){
             console.log(`Error : ${error}`);
+            response.status(501).json({
+                result : "fail",
+                type: "DBerror"
+            });
         });
 
 });

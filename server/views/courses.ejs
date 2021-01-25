@@ -499,7 +499,7 @@
                     </h2>
                 </div>
                 <div class="btn">
-                    <a href="/purchase/<%=course._id%>"><button>Buy Now</button></a>
+                    <button onclick="purchase(`<%=course._id%>`)">Buy Now</button>
                 </div>
             </div>
             <% }); %>
@@ -715,6 +715,58 @@
 
 
     });
+
+
+
+    // Buy Query !
+    // Type of Request - GET
+
+    function purchase(id) {
+
+        fetch(`/purchase/${id}`)
+            .then(response => response.json())
+            .then(function (serverReponse) {
+
+                const { result } = serverReponse;
+
+                if (result === "success") {
+                    notification.classList.toggle("active");
+                    notification.innerHTML = `<h2>Course Purchased ✔</h2>`;
+
+                    setTimeout(() => {
+                        notification.classList.toggle("active");
+
+                    }, 1500);
+                } else {
+                    if (result === "fail") {
+                        const { type } = serverReponse;
+                        if (type === "DBerror") {
+
+                            notification.classList.toggle("active");
+                            notification.innerHTML = `<h2>Failed : DB Error ❌</h2>`;
+
+                            setTimeout(() => {
+                                notification.classList.toggle("active");
+                            }, 1500);
+
+                        } else {
+
+                            notification.classList.toggle("active");
+                            notification.innerHTML = `<h2>Failed : Already Purchased ❌</h2>`;
+
+                            setTimeout(() => {
+                                notification.classList.toggle("active");
+                            }, 1500);
+
+                        }
+                    }
+                }
+            })
+            .catch(function (error) {
+                console.log(`Error : ${error}`);
+            });
+
+    }
 
 </script>
 

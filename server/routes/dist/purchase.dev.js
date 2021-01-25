@@ -6,7 +6,11 @@ var router = express.Router(); // Bring Course and Purchase Table !
 
 var Course = require("../tables/Courses");
 
-var Purchase = require("../tables/Purchase");
+var Purchase = require("../tables/Purchase"); // @type    GET
+//@route    /purchase/:id
+// @desc    Purchase Course
+// @access  Private
+
 
 router.get("/:id", function (request, response) {
   var id = request.params.id; // Create Timestamp !
@@ -53,13 +57,17 @@ router.get("/:id", function (request, response) {
               courseID: id,
               courseName: course.courseName
             }
-          }).then(function (purchasedCourse) {
-            console.log("Course Updated !");
+          }).then(function () {
             response.json({
-              result: "Course Updated : ".concat(purchasedCourse.courseName)
+              result: "success",
+              type: "coursepurchased"
             });
           })["catch"](function (error) {
             console.log("Error : ".concat(error));
+            response.status(501).json({
+              result: "fail",
+              type: "DBerror"
+            });
           });
         }
       } else {
@@ -79,17 +87,30 @@ router.get("/:id", function (request, response) {
         new Purchase(purchaseObject).save().then(function (purchasedCourse) {
           console.log("Course Purchased");
           response.json({
-            result: "Course Purchased : ".concat(purchasedCourse.courseName)
+            result: 'success',
+            type: 'coursepurchased'
           });
         })["catch"](function (error) {
           console.log("Error : ".concat(error));
+          response.status(501).json({
+            result: "fail",
+            type: "DBerror"
+          });
         });
       }
     })["catch"](function (error) {
       console.log("Error : ".concat(error));
+      response.status(501).json({
+        result: "fail",
+        type: "DBerror"
+      });
     });
   })["catch"](function (error) {
     console.log("Error : ".concat(error));
+    response.status(501).json({
+      result: "fail",
+      type: "DBerror"
+    });
   });
 });
 module.exports = router;
