@@ -69,9 +69,14 @@ var Course = require("./tables/Courses"); // Routes
 
 
 app.get("/", redirectLogin, function (request, response) {
+  var email = request.session.email;
+  console.log(email);
+  var adminStatus;
+  adminStatus = email.includes("@admin.com") ? 1 : 0;
   Course.find().then(function (courses) {
     response.render("courses", {
-      courses: courses
+      courses: courses,
+      adminStatus: adminStatus
     });
   })["catch"](function (error) {
     console.log("Error : ".concat(error));

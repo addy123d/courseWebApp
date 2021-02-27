@@ -79,42 +79,49 @@ router.post("/loginDetails", function (request, response) {
   // Deconstruct Body Object !
   var _request$body2 = request.body,
       email = _request$body2.email,
-      password = _request$body2.password; // Bring User Table !
+      password = _request$body2.password; // Handle admin credentials !
 
-  User.findOne({
-    email: email
-  }).then(function (user) {
-    // Check whether user exists or not !
-    if (user) {
-      // User exists !
-      // Now compare password from the database and password from the form !
-      if (password === user.password) {
-        //Here user will be an object containing all details as its properties !
-        // Store data into session !
-        request.session.email = user.email;
-        request.session.username = user.username;
-        request.session.ID = user._id; // Response !
+  if (email.includes("@admin.com") && password === "admin12345") {
+    request.session.email = email;
+    response.redirect("/");
+  } else {
+    // Handle users credentials !
+    // Bring User Table !
+    User.findOne({
+      email: email
+    }).then(function (user) {
+      // Check whether user exists or not !
+      if (user) {
+        // User exists !
+        // Now compare password from the database and password from the form !
+        if (password === user.password) {
+          //Here user will be an object containing all details as its properties !
+          // Store data into session !
+          request.session.email = user.email;
+          request.session.username = user.username;
+          request.session.ID = user._id; // Response !
 
-        response.json({
-          success: "Successfully Logged In !"
-        });
+          response.json({
+            success: "Successfully Logged In !"
+          });
+        } else {
+          response.json({
+            passworderror: "Password not matched !"
+          });
+        }
+
+        ;
       } else {
+        // User Doesn't exists !
         response.json({
-          passworderror: "Password not matched !"
+          emailerror: "User is not registered"
         });
       }
 
       ;
-    } else {
-      // User Doesn't exists !
-      response.json({
-        emailerror: "User is not registered"
-      });
-    }
-
-    ;
-  })["catch"](function (error) {
-    console.log("Error : ".concat(error));
-  });
+    })["catch"](function (error) {
+      console.log("Error : ".concat(error));
+    });
+  }
 });
 module.exports = router;

@@ -59,7 +59,7 @@ const options = {
 
 mongoose.connect(url,options)
     .then(function(){
-        console.log("Database Connected Successfully !")
+        console.log("Database Connected Successfully !");
     })
     .catch(function(error){
         console.log(`Something went wrong ! - ${error}`);
@@ -71,9 +71,16 @@ const Course = require("./tables/Courses");
 // Routes
 app.get("/",redirectLogin,function(request,response){
 
+    const {email} = request.session;
+    console.log(email);
+
+    let adminStatus;
+
+    adminStatus = (email.includes("@admin.com")) ? 1 : 0;
+
     Course.find()
         .then(function(courses){
-            response.render("courses",{ courses });
+            response.render("courses",{ courses, adminStatus });
         })
         .catch(function(error){
             console.log(`Error : ${error}`);

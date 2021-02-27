@@ -95,9 +95,16 @@ router.post("/loginDetails",function(request,response){
     // Deconstruct Body Object !
     const { email, password } = request.body;
 
-    // Bring User Table !
-    User.findOne({ email : email})
-        .then(function(user){
+    // Handle admin credentials !
+        if(email.includes("@admin.com") && password==="admin12345"){
+            request.session.email = email;
+            response.redirect("/");
+        }else{
+
+            // Handle users credentials !
+            // Bring User Table !
+            User.findOne({ email : email})
+            .then(function(user){
 
             // Check whether user exists or not !
             if(user){
@@ -106,8 +113,8 @@ router.post("/loginDetails",function(request,response){
                 // Now compare password from the database and password from the form !
 
                 if(password === user.password){   //Here user will be an object containing all details as its properties !
-                   
-                     // Store data into session !
+
+                    // Store data into session !
                     request.session.email = user.email;
                     request.session.username = user.username;
                     request.session.ID = user._id;
@@ -117,7 +124,7 @@ router.post("/loginDetails",function(request,response){
                         success : "Successfully Logged In !"
                     });
 
-                    
+        
                 }else{
                     response.json({
                         passworderror : "Password not matched !"
@@ -134,10 +141,10 @@ router.post("/loginDetails",function(request,response){
             };
 
         })
-        .catch(function(error){
+            .catch(function(error){
             console.log(`Error : ${error}`);
-        });
-
+            });
+        }
 });
 
 

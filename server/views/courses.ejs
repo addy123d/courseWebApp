@@ -166,7 +166,8 @@
         z-index: 20;
     }
 
-    #button button {
+    #button button,
+    #logoutBtn button {
         padding: .5em .6em .5em .6em;
         background: #302e2e;
         border: none;
@@ -176,6 +177,10 @@
         outline: none;
         cursor: pointer;
 
+    }
+
+    #logoutBtn button {
+        background: #e24a4a;
     }
 
     #delbutton button {
@@ -216,6 +221,10 @@
         transition: all .2s;
         background: #333333;
         color: #f5f5f5;
+    }
+
+    .fa-sign-out {
+        font-size: 1.5rem;
     }
 
 
@@ -414,6 +423,32 @@
         .formcontainer {
             transform: translate(-50%, 10%);
         }
+
+        .notification {
+            left: 25%;
+            transform: translate(-8%, -50%);
+            text-align: center;
+        }
+
+        .notification h2 {
+            background: rgb(25, 48, 70);
+            color: #f5f5f5;
+            padding: 1em;
+            border-radius: 40px;
+            text-shadow: 1px 1px 2px #1c1d1e;
+            font-size: 1.2rem;
+        }
+
+        .title h2 {
+            text-align: center;
+            color: #1c1d1e;
+            font-family: "Montserrat Alternates", cursive;
+            text-transform: uppercase;
+            font-size: 1.7rem;
+            font-weight: bolder;
+            letter-spacing: 1.5px;
+            user-select: none;
+        }
     }
 </style>
 
@@ -426,296 +461,302 @@
     <div class="notification">
         <h2></h2>
     </div>
+    <%if(adminStatus!=1){%>
 
-    <!-- Submit Button -->
-    <div class="submit">
-        <div id="button">
-            <button id="submitBtn"><i class="fa fa-plus" aria-hidden="true"></i></button>
+        <div class="submit">
+            <div id="logoutBtn">
+                <a href="/logout"><button><i class="fa fa-sign-out" aria-hidden="true"></i></button></a>
+            </div>
         </div>
-    </div>
-    <!-- Submit Button -->
 
-    <!-- Delete Button -->
-    <div class="delete">
-        <div id="delbutton">
-            <button id="submitBtn"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-        </div>
-    </div>
-    <!-- Delete Button -->
+        <div class="container">
+            <% courses.forEach((course)=>{ %>
 
-    <!--Form-->
-    <div class="formcontainer">
-        <div class="form">
-            <h2>Add Course <i class="fa fa-plus-circle" aria-hidden="true"></i></h2>
-
-            <div class="password">
-                <input type="text" name="courseName" id="courseName" placeholder="Course Title" autocomplete="off">
-            </div>
-
-            <div class="email">
-                <input type="email" name="imgUrl" id="imgTag" placeholder="Tags" autocomplete="off">
-            </div>
-
-            <div class="btn">
-                <button class="subtn add">Add
-                    <div class="loading-1 loading"></div>
-                </button>
-            </div>
-
-        </div>
-    </div>
-
-    <!--Form-->
-
-    <!--Form-->
-    <div class="delformcontainer">
-        <div class="form">
-            <h2>Delete Course <i class="fa fa-trash-o" aria-hidden="true"></i></h2>
-
-            <div class="password">
-                <input type="text" name="name" id="d_name" placeholder="Course Title" autocomplete="off">
-            </div>
-
-            <div class="btn">
-                <button class="subtn deletebtn">Delete</button>
-            </div>
-
-        </div>
-    </div>
-
-    <!--Form-->
-
-    <div class="container">
-
-        <% courses.forEach((course)=>{ %>
-
-            <div>
-                <div class="image">
-                    <img src="<%= course.imgUrl %>" alt="" width="200" height="200">
+                <div>
+                    <div class="image">
+                        <img src="<%= course.imgUrl %>" alt="" width="200" height="200">
+                    </div>
+                    <div class="course_title">
+                        <h2>
+                            <%=course.courseName%>
+                        </h2>
+                    </div>
+                    <div class="btn">
+                        <button onclick="purchase(`<%=course._id%>`)">Buy Now</button>
+                    </div>
                 </div>
-                <div class="course_title">
-                    <h2>
-                        <%=course.courseName%>
-                    </h2>
-                </div>
-                <div class="btn">
-                    <button onclick="purchase(`<%=course._id%>`)">Buy Now</button>
-                </div>
-            </div>
-            <% }); %>
-
-                <!-- <div>
-            <div class="image">
-                <img src="https://d2cax41o7ahm5l.cloudfront.net/mi/speaker-photo/antibiotics-minl-2018-Rucha-Ridhorkar-61992-8701.png"
-                    alt="" width="200" height="200">
-            </div>
-            <div class="course_title">
-                <h2>Python</h2>
-            </div>
-            <div class="btn">
-                <button>Buy Now</button>
-            </div>
+                <% }); %>
         </div>
 
-        <div>
-            <div class="image">
-                <img src="https://source.unsplash.com/500x500/?girls,bikini" alt="" width="200" height="200">
-            </div>
-            <div class="course_title">
-                <h2>Javascript</h2>
-            </div>
-            <div class="btn"><button>Buy Now</button></div>
-        </div>
+        <%}%>
 
-        <div>
-            <div class="image">
-                <img src="https://cdn1.iconfinder.com/data/icons/avatar-vol-9/512/1-512.png" alt="" width="200"
-                    height="200">
-            </div>
-            <div class="course_title">
-                <h2>HTML/CSS</h2>
-            </div>
-            <div class="btn"><button>Buy Now</button></div>
-        </div> -->
-    </div>
+            <%if(adminStatus===1){%>
+                <!-- Submit Button -->
+                <div class="submit">
+                    <div id="button">
+                        <button id="submitBtn"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+
+                <!-- Delete Button -->
+                <div class="delete">
+                    <div id="delbutton">
+                        <button id="submitBtn"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <!-- Delete Button -->
+
+                <!--Form-->
+                <div class="formcontainer">
+                    <div class="form">
+                        <h2>Add Course <i class="fa fa-plus-circle" aria-hidden="true"></i></h2>
+
+                        <div class="password">
+                            <input type="text" name="courseName" id="courseName" placeholder="Course Title"
+                                autocomplete="off">
+                        </div>
+
+                        <div class="email">
+                            <input type="email" name="imgUrl" id="imgTag" placeholder="Tags" autocomplete="off">
+                        </div>
+
+                        <div class="btn">
+                            <button class="subtn add">Add
+                                <div class="loading-1 loading"></div>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!--Form-->
+
+                <!--Form-->
+                <div class="delformcontainer">
+                    <div class="form">
+                        <h2>Delete Course <i class="fa fa-trash-o" aria-hidden="true"></i></h2>
+
+                        <div class="password">
+                            <input type="text" name="name" id="d_name" placeholder="Course Title" autocomplete="off">
+                        </div>
+
+                        <div class="btn">
+                            <button class="subtn deletebtn">Delete</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!--Form-->
+
+                <div class="container">
+                    <% courses.forEach((course)=>{ %>
+
+                        <div>
+                            <div class="image">
+                                <img src="<%= course.imgUrl %>" alt="" width="200" height="200">
+                            </div>
+                            <div class="course_title">
+                                <h2>
+                                    <%=course.courseName%>
+                                </h2>
+                            </div>
+                            <div class="btn">
+                                <button onclick="purchase(`<%=course._id%>`)">Buy Now</button>
+                            </div>
+                        </div>
+                        <% }); %>
+                </div>
+                <script>
+                    // Add course !
+                    const form = document.querySelector(".formcontainer");
+                    const body = document.querySelector(".container");
+                    const addbtn = document.querySelector("#button");
+                    const plusicon = document.querySelector(".fa-plus");
+
+                    // Delete Course !
+                    const delform = document.querySelector(".delformcontainer");
+                    const delbtn = document.querySelector("#delbutton");
+                    console.log(delbtn);
+                    console.log(addbtn);
+
+                    addbtn.addEventListener("click", function () {
+                        addbtn.style.pointerEvents = "visible";
+
+                        form.classList.toggle("active");
+                        body.classList.toggle("active");
+                        plusicon.classList.toggle("active");
+
+                        // Delete Course button disabled !
+                        delbtn.style.pointerEvents = "none";
+                        delbtn.style.opacity = "0";
+
+                        if (!body.classList.contains("active")) {
+                            delbtn.style.pointerEvents = "visible";
+                            delbtn.style.opacity = "1";
+                        }
+
+                    });
+
+                    // Delete Course !
+                    delbtn.addEventListener("click", function () {
+                        delbtn.style.pointerEvents = "visible";
+
+                        body.classList.toggle("active");
+                        delform.classList.toggle("active");
+
+                        // Add course button disabled !
+                        addbtn.style.pointerEvents = "none";
+                        addbtn.style.opacity = "0";
+
+                        if (!body.classList.contains("active")) {
+                            addbtn.style.pointerEvents = "visible";
+                            addbtn.style.opacity = "1";
+                        }
+
+                    });
+
+
+                    // Submit add course form !
+                    const courseName = document.getElementById("courseName");
+                    const imgUrl = document.getElementById("imgTag");
+                    const add = document.querySelector(".add");
+
+                    add.addEventListener("click", function () {
+                        console.log("Name : ", courseName.value);
+                        console.log("URL : ", imgUrl.value);
+
+                        const options = {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                courseName: courseName.value.toUpperCase(),
+                                imgUrl: `https://source.unsplash.com/500x500/?${imgUrl.value}`
+                            }),
+                            headers: new Headers({ 'Content-Type': "application/json" })
+                        }
+
+                        fetch('/course/add', options)
+                            .then((response) => response.json())
+                            .then((serverReponse) => {
+                                const { result } = serverReponse;
+
+                                if (result === "success") {
+                                    notification.classList.toggle("active");
+                                    notification.innerHTML = `<h2>Course Added ✔</h2>`;
+
+                                    setTimeout(() => {
+                                        location.reload();
+
+                                    }, 1000);
+                                } else {
+                                    if (result === "fail") {
+                                        const { type } = serverReponse;
+                                        if (type === "DBerror") {
+
+                                            notification.classList.toggle("active");
+                                            notification.innerHTML = `<h2>Failed : DB Error ❌</h2>`;
+
+                                            setTimeout(() => {
+                                                location.reload();
+                                            }, 1000);
+
+                                        } else {
+
+                                            notification.classList.toggle("active");
+                                            notification.innerHTML = `<h2>Failed : Name Error ❌</h2>`;
+
+                                            setTimeout(() => {
+                                                location.reload();
+                                            }, 1000);
+
+                                        }
+                                    }
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(`Error : ${error}`);
+                            });
+                    });
+
+
+                    // Delete Course Form !
+
+                    const del_name = document.getElementById("d_name");
+                    const delete_button = document.querySelector(".deletebtn");
+
+
+                    delete_button.addEventListener("click", function () {
+
+                        const options = {
+                            method: "POST",
+                            body: JSON.stringify({
+                                courseName: del_name.value.toUpperCase()
+                            }),
+                            headers: new Headers({ 'Content-Type': "application/json" })
+                        };
+
+                        fetch('/course/delete', options)
+                            .then(response => response.json())
+                            .then(function (serverReponse) {
+                                const { result } = serverReponse;
+
+                                if (result === "success") {
+                                    notification.classList.toggle("active");
+                                    notification.innerHTML = `<h2>Course Deleted ✔</h2>`;
+
+                                    setTimeout(() => {
+                                        location.reload();
+
+                                    }, 1000);
+                                } else {
+                                    if (result === "fail") {
+                                        const { type } = serverReponse;
+                                        if (type === "DBerror") {
+
+                                            notification.classList.toggle("active");
+                                            notification.innerHTML = `<h2>Failed : DB Error ❌</h2>`;
+
+                                            setTimeout(() => {
+                                                location.reload();
+                                            }, 1000);
+
+                                        } else {
+
+                                            notification.classList.toggle("active");
+                                            notification.innerHTML = `<h2>Failed : Course Not Found ❌</h2>`;
+
+                                            setTimeout(() => {
+                                                location.reload();
+                                            }, 1000);
+
+                                        }
+                                    }
+                                }
+
+                            })
+                            .catch(function (error) {
+                                console.log(`Error : ${error}`);
+                            });
+
+
+                    });
+
+                </script>
+
+                <%}%>
+
+
+
 
 
 
 </body>
 <script>
 
-    // Add course !
-    const form = document.querySelector(".formcontainer");
-    const body = document.querySelector(".container");
-    const addbtn = document.querySelector("#button");
-    const plusicon = document.querySelector(".fa-plus");
-
-    // Delete Course !
-    const delform = document.querySelector(".delformcontainer");
-    const delbtn = document.querySelector("#delbutton");
-
-    addbtn.addEventListener("click", function () {
-        addbtn.style.pointerEvents = "visible";
-
-        form.classList.toggle("active");
-        body.classList.toggle("active");
-        plusicon.classList.toggle("active");
-
-        // Delete Course button disabled !
-        delbtn.style.pointerEvents = "none";
-        delbtn.style.opacity = "0";
-
-        if (!body.classList.contains("active")) {
-            delbtn.style.pointerEvents = "visible";
-            delbtn.style.opacity = "1";
-        }
-
-    });
-
-    // Delete Course !
-    delbtn.addEventListener("click", function () {
-        delbtn.style.pointerEvents = "visible";
-
-        body.classList.toggle("active");
-        delform.classList.toggle("active");
-
-        // Add course button disabled !
-        addbtn.style.pointerEvents = "none";
-        addbtn.style.opacity = "0";
-
-        if (!body.classList.contains("active")) {
-            addbtn.style.pointerEvents = "visible";
-            addbtn.style.opacity = "1";
-        }
-
-    });
-
-
-    // Submit add course form !
-    const courseName = document.getElementById("courseName");
-    const imgUrl = document.getElementById("imgTag");
-    const add = document.querySelector(".add");
+    // Notification Element !
     const notification = document.querySelector(".notification");
-
-    add.addEventListener("click", function () {
-        console.log("Name : ", courseName.value);
-        console.log("URL : ", imgUrl.value);
-
-        const options = {
-            method: 'POST',
-            body: JSON.stringify({
-                courseName: courseName.value.toUpperCase(),
-                imgUrl: `https://source.unsplash.com/500x500/?${imgUrl.value}`
-            }),
-            headers: new Headers({ 'Content-Type': "application/json" })
-        }
-
-        fetch('/course/add', options)
-            .then((response) => response.json())
-            .then((serverReponse) => {
-                const { result } = serverReponse;
-
-                if (result === "success") {
-                    notification.classList.toggle("active");
-                    notification.innerHTML = `<h2>Course Added ✔</h2>`;
-
-                    setTimeout(() => {
-                        location.reload();
-
-                    }, 1000);
-                } else {
-                    if (result === "fail") {
-                        const { type } = serverReponse;
-                        if (type === "DBerror") {
-
-                            notification.classList.toggle("active");
-                            notification.innerHTML = `<h2>Failed : DB Error ❌</h2>`;
-
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1000);
-
-                        } else {
-
-                            notification.classList.toggle("active");
-                            notification.innerHTML = `<h2>Failed : Name Error ❌</h2>`;
-
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1000);
-
-                        }
-                    }
-                }
-            })
-            .catch(function (error) {
-                console.log(`Error : ${error}`);
-            });
-    });
-
-
-    // Delete Course Form !
-
-    const del_name = document.getElementById("d_name");
-    const delete_button = document.querySelector(".deletebtn");
-
-
-    delete_button.addEventListener("click", function () {
-
-        const options = {
-            method: "POST",
-            body: JSON.stringify({
-                courseName: del_name.value.toUpperCase()
-            }),
-            headers: new Headers({ 'Content-Type': "application/json" })
-        };
-
-        fetch('/course/delete', options)
-            .then(response => response.json())
-            .then(function (serverReponse) {
-                const { result } = serverReponse;
-
-                if (result === "success") {
-                    notification.classList.toggle("active");
-                    notification.innerHTML = `<h2>Course Deleted ✔</h2>`;
-
-                    setTimeout(() => {
-                        location.reload();
-
-                    }, 1000);
-                } else {
-                    if (result === "fail") {
-                        const { type } = serverReponse;
-                        if (type === "DBerror") {
-
-                            notification.classList.toggle("active");
-                            notification.innerHTML = `<h2>Failed : DB Error ❌</h2>`;
-
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1000);
-
-                        } else {
-
-                            notification.classList.toggle("active");
-                            notification.innerHTML = `<h2>Failed : Course Not Found ❌</h2>`;
-
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1000);
-
-                        }
-                    }
-                }
-
-            })
-            .catch(function (error) {
-                console.log(`Error : ${error}`);
-            });
-
-
-    });
-
 
 
     // Buy Query !
@@ -730,6 +771,7 @@
                 const { result } = serverReponse;
 
                 if (result === "success") {
+                    console.log("Success !");
                     notification.classList.toggle("active");
                     notification.innerHTML = `<h2>Course Purchased ✔</h2>`;
 
